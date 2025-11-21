@@ -15,7 +15,7 @@ class UpdateTaskRequest extends FormRequest
     {
         $user = $this->user();
 
-        if ($user->hasRole('user')) {
+        if ($user->isRegularUser()) {
             return [
                 'status' => 'required|in:pending,in_progress,completed,cancelled',
             ];

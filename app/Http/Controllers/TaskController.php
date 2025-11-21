@@ -24,14 +24,31 @@ class TaskController extends Controller
     public function index(GetTaskRequest $request)
     {
         $filters = $request->validated();
+        $user = auth()->user();
+        if ($user->isRegularUser()) {
+            $filters['assigned_to'] = $user->id;
+        }
         $tasks = $this->taskRepository->filterTasks($filters);
 
         return TaskResource::collection($tasks);
     }
+    public function show($id)
+    {
+        $task = $this->taskRepository->find($id);
 
-    /**
-     * Store a newly created task
-     */
+        if (!$task) {
+            return response()->json(['message' => 'Task not found.'], 404);
+        }
+
+        $user = auth()->user();
+
+        if ($user->hasRole('user') && $task->assigned_to !== $user->id) {
+            return response()->json(['message' => 'You are not authorized to view this task.'], 403);
+        }
+
+        return new TaskResource($task);
+    }
+
     public function store(StoreTaskRequest $request)
     {
         $data = $request->validated();
@@ -67,7 +84,7 @@ class TaskController extends Controller
     {
         $data = $request->validated();
         $user = $request->user();
-        if ($user->hasRole('user') && $task->assigned_to !== $user->id) {
+        if ($user->isRegularUser() && !$user->ownsTask($task)) {
             return response()->json([
                 'message' => 'You are not authorized to update this task.'
             ], 403);
@@ -75,7 +92,7 @@ class TaskController extends Controller
 
         DB::beginTransaction();
         try {
-            if ($user->hasRole('user')) {
+            if ($user->isRegularUser()) {
                 $data = ['status' => $data['status']];
 
                 if ($data['status'] === 'completed') {
@@ -98,7 +115,7 @@ class TaskController extends Controller
             $updatedTask = $this->taskRepository->update($task, $data);
 
 
-            if ($user->hasRole('manager') && $dependsOn !== null) {
+            if ($user->isManager() && $dependsOn !== null) {
 
                 if (in_array($task->id, $dependsOn)) {
                     throw ValidationException::withMessages([

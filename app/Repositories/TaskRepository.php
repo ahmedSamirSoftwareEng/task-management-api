@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\Task;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Auth;
 
 class TaskRepository implements TaskRepositoryInterface
 {

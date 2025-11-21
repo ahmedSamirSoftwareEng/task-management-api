@@ -51,4 +51,19 @@ class User extends Authenticatable
     {
         return $this->hasMany(Task::class, 'assigned_to');
     }
+
+    public function isRegularUser(): bool
+    {
+        return $this->hasRole('user');
+    }
+
+    public function isManager(): bool
+    {
+        return $this->hasRole('manager');
+    }
+
+    public function ownsTask(Task $task): bool
+    {
+        return $task->assigned_to === $this->id;
+    }
 }

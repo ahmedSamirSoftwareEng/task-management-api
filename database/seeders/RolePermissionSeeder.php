@@ -32,6 +32,7 @@ class RolePermissionSeeder extends Seeder
         ]);
         $user->givePermissionTo([
             'view tasks',
+            'edit tasks',
         ]);
     }
 }

@@ -54,4 +54,9 @@ docker compose exec app php artisan key:generate
 docker compose exec app php artisan migrate
 ```
 
-The application will be available at `http://localhost:8080`
+### 8. Seed the Database
+```bash
+docker compose exec app php artisan db:seed
+```
+
+The application will be available at `http://localhost:8081`

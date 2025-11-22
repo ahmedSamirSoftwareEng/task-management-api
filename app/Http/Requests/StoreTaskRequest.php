@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+use App\Enums\TaskStatus;
 
 class StoreTaskRequest extends FormRequest
 {
@@ -24,7 +26,10 @@ class StoreTaskRequest extends FormRequest
         return [
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'status' => 'nullable|in:pending,in_progress,completed,cancelled',
+            'status' => [
+                'nullable',
+                Rule::in(array_column(TaskStatus::cases(), 'value')),
+            ],
             'assigned_to' => 'nullable|exists:users,id',
             'due_date' => 'nullable|date',
             'depends_on' => 'nullable|array',

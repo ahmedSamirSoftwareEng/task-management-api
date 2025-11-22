@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Enums\TaskStatus;
 use App\Enums\TaskStatusEnum;
 use App\Models\Task;
 use App\Models\User;
@@ -22,7 +23,7 @@ class TaskSeeder extends Seeder
             'description' => 'Review specs and list all endpoints, roles, and validations.',
             'assigned_to' => $userId1,
             'due_date'    => Carbon::now()->addDays(2),
-            'status'      => 'completed',
+            'status'      => TaskStatus::Pending->value,
         ]);
 
         $task2 = Task::create([
@@ -30,7 +31,7 @@ class TaskSeeder extends Seeder
             'description' => 'Design tables for users, tasks, dependencies, and RBAC.',
             'assigned_to' => $userId1,
             'due_date'    => Carbon::now()->addDays(3),
-            'status'      => 'cancelled',
+            'status'      => TaskStatus::Cancelled->value,
         ]);
 
         $task3 = Task::create([
@@ -38,7 +39,7 @@ class TaskSeeder extends Seeder
             'description' => 'Build endpoints for creating, updating, listing, and viewing tasks.',
             'assigned_to' => $userId1,
             'due_date'    => Carbon::now()->addDays(4),
-            'status'      => 'pending',
+            'status'      => TaskStatus::Pending->value,
         ]);
 
         $task4 = Task::create([
@@ -46,7 +47,7 @@ class TaskSeeder extends Seeder
             'description' => 'Integrate Spatie Permission and apply policies to endpoints.',
             'assigned_to' => $userId1,
             'due_date'    => Carbon::now()->addDays(5),
-            'status'      => 'pending',
+            'status'      =>  TaskStatus::Pending->value,
         ]);
 
         $task5 = Task::create([
@@ -54,7 +55,7 @@ class TaskSeeder extends Seeder
             'description' => 'Document all API endpoints and export collection for submission.',
             'assigned_to' => $userId2,
             'due_date'    => Carbon::now()->addDays(6),
-            'status'      => 'in_progress',
+            'status'      => TaskStatus::InProgress->value,
         ]);
 
 

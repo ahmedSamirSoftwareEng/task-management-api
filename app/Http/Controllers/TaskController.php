@@ -18,9 +18,7 @@ class TaskController extends Controller
         private readonly TaskRepositoryInterface $taskRepository
     ) {}
 
-    /**
-     * Display a listing of tasks with filters
-     */
+
     public function index(GetTaskRequest $request)
     {
         $filters = $request->validated();

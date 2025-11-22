@@ -19,7 +19,10 @@ class UpdateTaskRequest extends FormRequest
 
         if ($user->isRegularUser()) {
             return [
-                'status' => 'required|in:pending,in_progress,completed,cancelled',
+                'status' => [
+                    'nullable',
+                    Rule::in(array_column(TaskStatus::cases(), 'value')),
+                ],
             ];
         }
 

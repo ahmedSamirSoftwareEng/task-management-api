@@ -8,6 +8,7 @@ use App\Repositories\TaskRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
+use App\Enums\TaskStatus;
 
 class TaskService
 {
@@ -75,9 +76,9 @@ class TaskService
             if ($user->isRegularUser()) {
                 $data = ['status' => $data['status']];
 
-                if (($data['status'] ?? null) === 'completed') {
+                if (($data['status'] ?? null) === TaskStatus::Completed->value) {
                     $incompleteDeps = $task->dependencies()
-                        ->where('status', '!=', 'completed')
+                        ->where('status', '!=', TaskStatus::Completed->value)
                         ->exists();
 
                     if ($incompleteDeps) {

@@ -9,7 +9,6 @@ use App\Http\Resources\TaskResource;
 use App\Models\Task;
 use App\Services\TaskService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
 class TaskController extends Controller
@@ -24,7 +23,6 @@ class TaskController extends Controller
         $filters = $request->validated();
         $user = auth()->user();
         $tasks = $this->taskService->listTasks($filters, $user);
-        $tasks = $this->taskRepository->filterTasks($filters);
 
         return TaskResource::collection($tasks);
     }
